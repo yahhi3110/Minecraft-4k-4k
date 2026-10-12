@@ -36,17 +36,23 @@ C=mix(C,S,smoothstep(70.,110.,L));
 o=vec4(C,1);
 })";
 float f[7]={256,30,256};
+extern"C"{__declspec(dllexport)DWORD NvOptimusEnablement=1;__declspec(dllexport)int AmdPowerXpressRequestHighPerformance=1;}
 int main(){
 HWND w=CreateWindowA("static",0,0x90000000,0,0,1920,1080,0,0,0,0);
 HDC d=GetDC(w);
 PIXELFORMATDESCRIPTOR p={sizeof p,1,37,0,32};
 SetPixelFormat(d,ChoosePixelFormat(d,&p),&p);
 wglMakeCurrent(d,wglCreateContext(d));
+if(!wglGetProcAddress("glUseProgram")){MessageBoxA(0,(char*)glGetString(7937),"OpenGL 4.3+ required",0);return 1;}
+int P=G(int,"glCreateShaderProgramv",int,int,const char**)(0x8B30,1,&s),k;
+char b[999];
+G(void,"glGetProgramiv",int,int,int*)(P,0x8B82,&k);
+if(!k){G(void,"glGetProgramInfoLog",int,int,int*,char*)(P,999,0,b);MessageBoxA(0,b,"shader error",0);return 1;}
+G(void,"glUseProgram",int)(P);
 ShowCursor(0);
-G(void,"glUseProgram",int)(G(int,"glCreateShaderProgramv",int,int,const char**)(0x8B30,1,&s));
-for(DWORD z=GetTickCount(),a=z;!GetAsyncKeyState(27);){
+for(DWORD z=GetTickCount(),a=z;GetAsyncKeyState(27)>=0;){
 MSG m;
-while(PeekMessageA(&m,0,0,0,1));
+while(PeekMessageA(&m,0,0,0,1))DispatchMessageA(&m);
 DWORD n=GetTickCount();
 float q=(n-a)*.012f;
 a=n;
