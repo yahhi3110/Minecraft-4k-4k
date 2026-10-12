@@ -23,6 +23,12 @@ Notch の Minecraft 4k（2010年 Java 4k Contest）を、GPU のフラグメン�
 
 4KB に収めるため、元作品にあった重力・衝突判定・ブロックの破壊と設置は省いた**飛行カメラ**です。
 
+## ビルド済み exe
+
+`bin/mc4k.exe`（x64、約19KB）を同梱しています。MinGW-w64 でクラウド上からクロスビルドしたもので、**Windows 実機での起動は未確認**です。
+実機で動かない場合は、下記の手順で自分のPCでビルドし直してください。
+再ビルドのコマンドは `x86_64-w64-mingw32-g++ -Os -s -static -mwindows mc4k.cpp -o bin/mc4k.exe -lopengl32 -lgdi32 -luser32` です。
+
 ## ビルド（Windows）
 
 OpenGL 4.3 以上に対応した GPU とドライバーが必要です（RTX 2050 は対応）。
